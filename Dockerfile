@@ -1,7 +1,7 @@
 # ==============================================================================
 # Stage 1: Build Frontend Vite Assets (Tailwind CSS v4 + Flux UI)
 # ==============================================================================
-FROM php:8.3-cli AS builder
+FROM php:8.4-cli AS builder
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -21,21 +21,21 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-reqs
 
 COPY package.json package-lock.json* ./
 RUN npm install
 
 COPY . .
 
-RUN composer dump-autoload --optimize --no-dev \
+RUN composer dump-autoload --optimize --no-dev --ignore-platform-reqs \
     && npm run build \
     && rm -rf node_modules
 
 # ==============================================================================
 # Stage 2: Production Runtime Image
 # ==============================================================================
-FROM php:8.3-cli
+FROM php:8.4-cli
 
 RUN apt-get update && apt-get install -y \
     libzip-dev \
