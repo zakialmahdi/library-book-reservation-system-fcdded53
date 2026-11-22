@@ -1,92 +1,77 @@
 @extends('layouts.master')
 
-@section('title', 'Add New Book - Tech Bookstore')
-
 @section('content')
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold">Add New Book</h2>
-        <a href="{{ route('books.index') }}" class="text-sm text-gray-500 hover:underline">← Back to Catalog</a>
+<div class="max-w-2xl mx-auto bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-8 shadow-sm space-y-6">
+    <div class="flex items-center justify-between">
+        <flux:heading size="xl">Add New Book to Catalogue</flux:heading>
+        <a href="{{ route('books.index') }}" class="text-xs font-semibold text-indigo-600 hover:underline">&larr; Back</a>
     </div>
 
-    <form action="{{ route('books.store') }}" method="POST" class="space-y-4">
+    <form method="POST" action="{{ route('books.store') }}" class="space-y-4">
         @csrf
 
-        <!-- Title Field -->
-        <div>
-            <label for="title" class="block text-sm font-medium text-gray-700">Book Title</label>
-            <input type="text"
-                   id="title"
-                   name="title"
-                   value="{{ old('title') }}"
-                   class="mt-1 block w-full rounded-md border-gray-300 p-2 border shadow-sm text-sm @error('title') border-rose-500 @enderror">
-            @error('title')
-                <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
-            @enderror
+        <flux:field>
+            <flux:label>Book Title</flux:label>
+            <flux:input type="text" name="title" value="{{ old('title') }}" required />
+            <flux:error name="title" />
+        </flux:field>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <flux:field>
+                <flux:label>Author</flux:label>
+                <flux:input type="text" name="author" value="{{ old('author') }}" required />
+                <flux:error name="author" />
+            </flux:field>
+
+            <flux:field>
+                <flux:label>Publisher</flux:label>
+                <flux:input type="text" name="publisher" value="{{ old('publisher') }}" required />
+                <flux:error name="publisher" />
+            </flux:field>
+
+            <flux:field>
+                <flux:label>Genre</flux:label>
+                <select name="genre_id" required class="w-full rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 px-3 py-2 text-sm">
+                    @foreach ($genres as $genre)
+                        <option value="{{ $genre->genre_id }}" @selected(old('genre_id') == $genre->genre_id)>{{ $genre->name }}</option>
+                    @endforeach
+                </select>
+                <flux:error name="genre_id" />
+            </flux:field>
+
+            <flux:field>
+                <flux:label>Book Type</flux:label>
+                <flux:input type="text" name="book_type" value="{{ old('book_type', 'Hardcover') }}" required />
+                <flux:error name="book_type" />
+            </flux:field>
+
+            <flux:field>
+                <flux:label>Publication Year</flux:label>
+                <flux:input type="number" name="publication_year" value="{{ old('publication_year', date('Y')) }}" required />
+                <flux:error name="publication_year" />
+            </flux:field>
+
+            <flux:field>
+                <flux:label>Page Count</flux:label>
+                <flux:input type="number" name="page_count" value="{{ old('page_count', 250) }}" required />
+                <flux:error name="page_count" />
+            </flux:field>
         </div>
 
-        <!-- Category Dropdown -->
-        <div>
-            <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
-            <select id="category_id"
-                    name="category_id"
-                    class="mt-1 block w-full rounded-md border-gray-300 p-2 border shadow-sm text-sm @error('category_id') border-rose-500 @enderror">
-                <option value="">-- Select Category --</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
-            @error('category_id')
-                <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
-            @enderror
-        </div>
+        <flux:field>
+            <flux:label>Description</flux:label>
+            <flux:textarea name="description" rows="4" required>{{ old('description') }}</flux:textarea>
+            <flux:error name="description" />
+        </flux:field>
 
-        <!-- Author Field -->
-        <div>
-            <label for="author" class="block text-sm font-medium text-gray-700">Author</label>
-            <input type="text"
-                   id="author"
-                   name="author"
-                   value="{{ old('author') }}"
-                   class="mt-1 block w-full rounded-md border-gray-300 p-2 border shadow-sm text-sm @error('author') border-rose-500 @enderror">
-            @error('author')
-                <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
-            @enderror
-        </div>
+        <label class="inline-flex items-center gap-2 text-sm">
+            <input type="checkbox" name="availability" value="1" checked class="rounded border-zinc-300 text-indigo-600">
+            <span>Available for Loan</span>
+        </label>
 
-        <!-- Price Field -->
-        <div>
-            <label for="price" class="block text-sm font-medium text-gray-700">Price ($)</label>
-            <input type="number"
-                   step="0.01"
-                   id="price"
-                   name="price"
-                   value="{{ old('price') }}"
-                   class="mt-1 block w-full rounded-md border-gray-300 p-2 border shadow-sm text-sm @error('price') border-rose-500 @enderror">
-            @error('price')
-                <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <!-- Is Featured Checkbox -->
-        <div class="flex items-center space-x-2">
-            <input type="checkbox"
-                   id="is_featured"
-                   name="is_featured"
-                   value="1"
-                   @checked(old('is_featured'))
-                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-            <label for="is_featured" class="text-sm font-medium text-gray-700">Mark as Featured Book</label>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="pt-4">
-            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 font-medium text-sm shadow">
-                Save Book
-            </button>
+        <div class="pt-3 flex justify-end gap-2">
+            <flux:button type="submit" variant="primary">Save Book</flux:button>
         </div>
     </form>
+</div>
 @endsection
-
-

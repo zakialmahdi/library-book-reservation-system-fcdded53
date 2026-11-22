@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: library-of-gmi
+    runtime: docker
+    plan: free
+    envVars:
+      - key: APP_NAME
+        value: "Library of GMI"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database

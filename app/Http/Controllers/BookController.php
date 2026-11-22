@@ -7,71 +7,80 @@ use App\Actions\Books\DeleteBookAction;
 use App\Actions\Books\UpdateBookAction;
 use App\Http\Requests\Books\BookRequest;
 use App\Models\Book;
-use App\Models\Category;
+use App\Models\Genre;
 use Illuminate\Support\Facades\Gate;
 
 class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::with('category')->get();
+        Gate::authorize('viewAny', Book::class);
 
-        return view('books.index', ['books' => $books]);
+        return view('books.index');
     }
 
     public function create()
     {
-        Gate::authorize('manage-books');
+        Gate::authorize('create', Book::class);
 
-        $categories = Category::all();
+        $genres = Genre::orderBy('name')->get();
 
-        return view('books.create', ['categories' => $categories]);
+        return view('books.create', ['genres' => $genres]);
     }
 
     public function store(BookRequest $request, CreateBookAction $action)
     {
-        $action->execute($request->validated(), $request->has('is_featured'));
+        Gate::authorize('create', Book::class);
+
+        $availability = $request->has('availability')
+            ? filter_var($request->input('availability'), FILTER_VALIDATE_BOOLEAN)
+            : true;
+
+        $action->execute($request->validated(), $availability);
 
         return redirect()->route('books.index')
-            ->with('success', 'Book created successfully!');
+            ->with('success', 'Book added to library catalogue successfully.');
     }
 
-    public function show(string $id)
+    public function show(Book $book)
     {
-        $book = Book::with('category')->findOrFail($id);
+        Gate::authorize('view', $book);
+
+        $book->load(['genre', 'reservations.user', 'loans.user']);
 
         return view('books.show', ['book' => $book]);
     }
 
-    public function edit(string $id)
+    public function edit(Book $book)
     {
-        Gate::authorize('manage-books');
+        Gate::authorize('update', $book);
 
-        $book = Book::findOrFail($id);
-        $categories = Category::all();
+        $genres = Genre::orderBy('name')->get();
 
-        return view('books.edit', ['book' => $book, 'categories' => $categories]);
+        return view('books.edit', ['book' => $book, 'genres' => $genres]);
     }
 
-    public function update(BookRequest $request, string $id, UpdateBookAction $action)
+    public function update(BookRequest $request, Book $book, UpdateBookAction $action)
     {
-        $book = Book::findOrFail($id);
+        Gate::authorize('update', $book);
 
-        $action->execute($book, $request->validated(), $request->has('is_featured'));
+        $availability = $request->has('availability')
+            ? filter_var($request->input('availability'), FILTER_VALIDATE_BOOLEAN)
+            : $book->availability;
+
+        $action->execute($book, $request->validated(), $availability);
 
         return redirect()->route('books.index')
-            ->with('success', 'Book updated successfully!');
+            ->with('success', 'Book details updated successfully.');
     }
 
-    public function destroy(string $id, DeleteBookAction $action)
+    public function destroy(Book $book, DeleteBookAction $action)
     {
-        Gate::authorize('manage-books');
+        Gate::authorize('delete', $book);
 
-        $book = Book::findOrFail($id);
         $action->execute($book);
 
         return redirect()->route('books.index')
-            ->with('success', 'Book deleted successfully!');
+            ->with('success', 'Book removed from catalogue.');
     }
 }
-

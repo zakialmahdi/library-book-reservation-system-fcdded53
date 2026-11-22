@@ -1,69 +1,61 @@
 @extends('layouts.master')
 
-@section('title', 'Register - Tech Bookstore')
-
 @section('content')
-    <div class="max-w-md mx-auto">
-        <h2 class="text-2xl font-bold mb-6 text-center">Create an Account</h2>
+<div class="max-w-md mx-auto mt-6">
+    <div class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl shadow-sm p-8">
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-indigo-600 text-white mb-3 shadow-sm">
+                <flux:icon.user-plus class="size-6" />
+            </div>
+            <flux:heading size="xl">Create Member Account</flux:heading>
+            <flux:subheading>Join Library of GMI to reserve and borrow library books</flux:subheading>
+        </div>
 
-        <form action="{{ route('register') }}" method="POST" class="space-y-4">
+        @if ($errors->any())
+            <div class="mb-5 rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs text-red-700">
+                <ul class="list-disc list-inside space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('register') }}" class="space-y-4">
             @csrf
 
-            <!-- Name -->
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                <input type="text"
-                       id="name"
-                       name="name"
-                       value="{{ old('name') }}"
-                       class="mt-1 block w-full rounded-md border-gray-300 p-2 border text-sm @error('name') border-rose-500 @enderror">
-                @error('name')
-                    <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
-                @enderror
-            </div>
+            <flux:field>
+                <flux:label>Full Name</flux:label>
+                <flux:input type="text" name="name" value="{{ old('name') }}" required autofocus placeholder="Ahmad bin Ali" />
+                <flux:error name="name" />
+            </flux:field>
 
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                <input type="email"
-                       id="email"
-                       name="email"
-                       value="{{ old('email') }}"
-                       class="mt-1 block w-full rounded-md border-gray-300 p-2 border text-sm @error('email') border-rose-500 @enderror">
-                @error('email')
-                    <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
-                @enderror
-            </div>
+            <flux:field>
+                <flux:label>Email Address</flux:label>
+                <flux:input type="email" name="email" value="{{ old('email') }}" required placeholder="ahmad@student.gmi.edu.my" />
+                <flux:error name="email" />
+            </flux:field>
 
-            <!-- Password -->
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password"
-                       id="password"
-                       name="password"
-                       class="mt-1 block w-full rounded-md border-gray-300 p-2 border text-sm @error('password') border-rose-500 @enderror">
-                @error('password')
-                    <p class="mt-1 text-sm text-rose-600">{{ $message }}</p>
-                @enderror
-            </div>
+            <flux:field>
+                <flux:label>Password</flux:label>
+                <flux:input type="password" name="password" required placeholder="Minimum 8 characters" />
+                <flux:error name="password" />
+            </flux:field>
 
-            <!-- Confirm Password -->
-            <div>
-                <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                <input type="password"
-                       id="password_confirmation"
-                       name="password_confirmation"
-                       class="mt-1 block w-full rounded-md border-gray-300 p-2 border text-sm">
-            </div>
+            <flux:field>
+                <flux:label>Confirm Password</flux:label>
+                <flux:input type="password" name="password_confirmation" required placeholder="Re-enter password" />
+            </flux:field>
 
-            <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 font-medium text-sm shadow">
-                Register
-            </button>
+            <flux:button type="submit" variant="primary" class="w-full mt-2">
+                Complete Registration
+            </flux:button>
         </form>
 
-        <p class="mt-4 text-center text-sm text-gray-600">
-            Already have an account? <a href="{{ route('login') }}" class="text-indigo-600 hover:underline">Log in</a>
+        <p class="mt-6 text-center text-xs text-zinc-500">
+            Already registered?
+            <a href="{{ route('login') }}" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign in here</a>
         </p>
     </div>
+</div>
 @endsection
-
