@@ -24,7 +24,7 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-reqs
 
 COPY package.json package-lock.json* ./
-RUN npm install
+RUN npm install --no-audit --no-fund
 
 COPY . .
 
