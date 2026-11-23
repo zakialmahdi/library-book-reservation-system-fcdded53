@@ -21,14 +21,14 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-reqs
+RUN composer install --no-scripts --no-autoloader --prefer-dist --ignore-platform-reqs
 
 COPY package.json package-lock.json* ./
 RUN npm install --no-audit --no-fund
 
 COPY . .
 
-RUN composer dump-autoload --optimize --no-dev --ignore-platform-reqs \
+RUN composer dump-autoload --optimize --ignore-platform-reqs \
     && npm run build \
     && rm -rf node_modules
 

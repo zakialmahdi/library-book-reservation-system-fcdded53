@@ -58,7 +58,11 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $extraMembers = User::factory(4)->member()->create();
+        if (User::count() < 8) {
+            $extraMembers = User::factory(4)->member()->create();
+        } else {
+            $extraMembers = User::where('role', 'member')->get();
+        }
 
         // 2. Seed Genres
         $genreNames = [
@@ -174,11 +178,13 @@ class DatabaseSeeder extends Seeder
         ));
 
         // Additional generated books across genres
-        foreach ($genres as $genre) {
-            Book::factory(2)->create([
-                'genre_id' => $genre->genre_id,
-                'availability' => true,
-            ]);
+        if (Book::count() < 15) {
+            foreach ($genres as $genre) {
+                Book::factory(2)->create([
+                    'genre_id' => $genre->genre_id,
+                    'availability' => true,
+                ]);
+            }
         }
 
         // 4. Seed Loans (Active, Overdue, Returned)
