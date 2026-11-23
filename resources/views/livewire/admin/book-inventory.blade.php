@@ -77,10 +77,10 @@
                 </thead>
                 <tbody class="divide-y divide-zinc-100 dark:divide-zinc-700">
                     @forelse ($books as $book)
-                        <tr wire:key="inv-book-{{ $book->book_id }}" class="hover:bg-zinc-50/70 dark:hover:bg-zinc-700/30">
+                        <tr wire:key="inv-book-{{ $book->book_id }}">
                             <td class="py-3.5 px-4 font-mono text-xs font-semibold">{{ $book->bookCode() }}</td>
                             <td class="py-3.5 px-4">
-                                <a href="{{ route('books.show', $book->book_id) }}" class="font-semibold text-zinc-900 dark:text-zinc-100 hover:text-indigo-600">
+                                <a href="{{ route('books.show', $book->book_id) }}" class="font-semibold text-zinc-900 dark:text-zinc-100">
                                     {{ $book->title }}
                                 </a>
                                 <div class="text-xs text-zinc-500">{{ $book->publisher }} ({{ $book->publication_year }})</div>
@@ -96,8 +96,7 @@
                                 <button
                                     type="button"
                                     wire:click="toggleAvailability({{ $book->book_id }})"
-                                    class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full transition {{ $book->availability ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-amber-100 text-amber-800 hover:bg-amber-200' }}"
-                                    title="Click to toggle availability status"
+                                    class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full {{ $book->availability ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800' }}"
                                 >
                                     <span class="w-2 h-2 rounded-full {{ $book->availability ? 'bg-emerald-600' : 'bg-amber-600' }}"></span>
                                     {{ $book->availability ? 'Available' : 'Checked Out' }}

@@ -185,14 +185,14 @@
                 </thead>
                 <tbody class="divide-y divide-zinc-100 dark:divide-zinc-700">
                     @forelse ($loans as $loan)
-                        <tr wire:key="loan-row-{{ $loan->loan_id }}" class="hover:bg-zinc-50/70 dark:hover:bg-zinc-700/30">
+                        <tr wire:key="loan-row-{{ $loan->loan_id }}">
                             <td class="py-3.5 px-4 font-mono text-xs font-semibold">#LN-{{ $loan->loan_id }}</td>
                             <td class="py-3.5 px-4">
                                 <div class="font-medium text-zinc-900 dark:text-zinc-100">{{ $loan->user?->name }}</div>
                                 <div class="text-xs text-zinc-500">{{ $loan->user?->memberCode() }}</div>
                             </td>
                             <td class="py-3.5 px-4">
-                                <a href="{{ route('books.show', $loan->book_id) }}" class="font-semibold text-zinc-900 dark:text-zinc-100 hover:text-indigo-600">
+                                <a href="{{ route('books.show', $loan->book_id) }}" class="font-semibold text-zinc-900 dark:text-zinc-100">
                                     {{ $loan->book?->title }}
                                 </a>
                                 <div class="text-xs text-zinc-500">{{ $loan->book?->bookCode() }}</div>

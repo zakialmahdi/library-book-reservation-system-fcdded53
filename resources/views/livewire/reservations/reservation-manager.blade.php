@@ -106,14 +106,14 @@
                 </thead>
                 <tbody class="divide-y divide-zinc-100 dark:divide-zinc-700">
                     @forelse ($reservations as $res)
-                        <tr wire:key="res-row-{{ $res->reservation_id }}" class="hover:bg-zinc-50/70 dark:hover:bg-zinc-700/30">
+                        <tr wire:key="res-row-{{ $res->reservation_id }}">
                             <td class="py-3.5 px-4 font-mono text-xs font-semibold">#RES-{{ $res->reservation_id }}</td>
                             <td class="py-3.5 px-4">
                                 <div class="font-medium text-zinc-900 dark:text-zinc-100">{{ $res->user?->name }}</div>
                                 <div class="text-xs text-zinc-500">{{ $res->user?->memberCode() }}</div>
                             </td>
                             <td class="py-3.5 px-4">
-                                <a href="{{ route('books.show', $res->book_id) }}" class="font-semibold text-zinc-900 dark:text-zinc-100 hover:text-indigo-600">
+                                <a href="{{ route('books.show', $res->book_id) }}" class="font-semibold text-zinc-900 dark:text-zinc-100">
                                     {{ $res->book?->title }}
                                 </a>
                                 <div class="text-xs text-zinc-500">{{ $res->book?->bookCode() }} &bull; {{ $res->book?->availability ? 'In Stock' : 'Checked Out' }}</div>

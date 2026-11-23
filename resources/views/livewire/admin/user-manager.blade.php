@@ -68,10 +68,10 @@
                 </thead>
                 <tbody class="divide-y divide-zinc-100 dark:divide-zinc-700">
                     @forelse ($users as $u)
-                        <tr wire:key="user-row-{{ $u->user_id }}" class="hover:bg-zinc-50/70 dark:hover:bg-zinc-700/30">
+                        <tr wire:key="user-row-{{ $u->user_id }}">
                             <td class="py-3.5 px-4 font-mono text-xs font-semibold">{{ $u->memberCode() }}</td>
                             <td class="py-3.5 px-4 font-semibold text-zinc-900 dark:text-zinc-100">
-                                <a href="{{ route('users.show', $u->user_id) }}" class="hover:text-indigo-600">
+                                <a href="{{ route('users.show', $u->user_id) }}">
                                     {{ $u->name }}
                                 </a>
                             </td>

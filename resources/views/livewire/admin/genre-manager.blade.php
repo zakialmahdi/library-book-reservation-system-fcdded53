@@ -82,7 +82,7 @@
                         <button
                             type="button"
                             x-on:click="toggleAccordion({{ $genre->genre_id }})"
-                            class="text-left flex items-center gap-2.5 font-bold text-base text-zinc-900 dark:text-zinc-100 hover:text-indigo-600"
+                            class="text-left flex items-center gap-2.5 font-bold text-base text-zinc-900 dark:text-zinc-100"
                         >
                             <span
                                 class="inline-flex items-center justify-center w-6 h-6 rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-600 text-xs font-mono"
@@ -135,7 +135,7 @@
                             @foreach ($genre->books as $book)
                                 <div class="flex items-center justify-between bg-white dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700 rounded-xl p-3 text-xs">
                                     <div>
-                                        <a href="{{ route('books.show', $book->book_id) }}" class="font-semibold text-zinc-900 dark:text-zinc-100 hover:text-indigo-600">
+                                        <a href="{{ route('books.show', $book->book_id) }}" class="font-semibold text-zinc-900 dark:text-zinc-100">
                                             {{ $book->title }}
                                         </a>
                                         <p class="text-zinc-500 mt-0.5">{{ $book->author }} &bull; {{ $book->publication_year }}</p>

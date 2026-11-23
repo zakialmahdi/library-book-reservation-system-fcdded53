@@ -129,7 +129,7 @@
             @endphp
             <div
                 wire:key="catalog-book-{{ $book->book_id }}"
-                class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-indigo-300 dark:hover:border-indigo-600 transition"
+                class="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-2xl p-6 shadow-sm flex flex-col justify-between"
             >
                 <div>
                     <!-- Top Meta Row -->
@@ -147,7 +147,7 @@
 
                     <!-- Book Title & Author -->
                     <h3 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 leading-snug">
-                        <a href="{{ route('books.show', $book->book_id) }}" class="hover:text-indigo-600">
+                        <a href="{{ route('books.show', $book->book_id) }}">
                             {{ $book->title }}
                         </a>
                     </h3>

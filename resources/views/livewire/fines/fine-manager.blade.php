@@ -71,7 +71,7 @@
                 </thead>
                 <tbody class="divide-y divide-zinc-100 dark:divide-zinc-700">
                     @forelse ($fines as $fine)
-                        <tr wire:key="fine-row-{{ $fine->fine_id }}" class="hover:bg-zinc-50/70 dark:hover:bg-zinc-700/30">
+                        <tr wire:key="fine-row-{{ $fine->fine_id }}">
                             <td class="py-3.5 px-4 font-mono text-xs font-semibold">#FN-{{ $fine->fine_id }}</td>
                             <td class="py-3.5 px-4 font-mono text-xs text-zinc-500">#LN-{{ $fine->loan_id }}</td>
                             <td class="py-3.5 px-4">
