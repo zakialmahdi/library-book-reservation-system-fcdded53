@@ -62,6 +62,7 @@ RUN mkdir -p storage/framework/cache/data \
     && chmod +x /var/www/html/docker-entrypoint.sh
 
 ENV PORT=10000
+ENV APP_KEY=base64:fsdySuEqGSchPqPE0y4CQaUyZpKJJOHOoAdydq6TblQ=
 EXPOSE 10000
 
 ENTRYPOINT ["/var/www/html/docker-entrypoint.sh"]

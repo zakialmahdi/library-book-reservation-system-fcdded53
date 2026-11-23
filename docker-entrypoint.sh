@@ -3,14 +3,14 @@ set -e
 
 cd /var/www/html
 
+# Guarantee APP_KEY is non-empty in the process environment
+if [ -z "${APP_KEY}" ]; then
+    export APP_KEY="base64:fsdySuEqGSchPqPE0y4CQaUyZpKJJOHOoAdydq6TblQ="
+fi
+
 # Create .env from .env.example if .env does not exist
 if [ ! -f /var/www/html/.env ]; then
     cp /var/www/html/.env.example /var/www/html/.env
-fi
-
-# Generate APP_KEY automatically if not provided via Render Environment Variables
-if [ -z "${APP_KEY}" ]; then
-    php artisan key:generate --force
 fi
 
 # Ensure SQLite database file exists if using sqlite driver
@@ -30,4 +30,4 @@ php artisan migrate --force
 php artisan db:seed --force
 
 echo "Starting Library of GMI server on port ${PORT:-10000}..."
-exec php artisan serve --host=0.0.0.0 --port="${PORT:-10000}"
+exec php -d variables_order=EGPCS artisan serve --host=0.0.0.0 --port="${PORT:-10000}"
